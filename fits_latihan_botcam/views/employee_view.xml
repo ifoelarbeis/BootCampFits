@@ -1,0 +1,50 @@
+<odoo>
+  <data>
+    <!-- Form Divisi-->
+    
+    <record model="ir.ui.view" id="hr_divisi_tree">
+      <field name="name">Master Divisi</field>
+      <field name="model">hr.divisi</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="desc"/>
+        </tree>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="hr_divisi_form">
+      <field name="name">Master Divisi</field>
+      <field name="model">hr.divisi</field>
+      <field name="arch" type="xml">
+        <form>
+        	<sheet>
+	        	<group>
+		          <field name="name"/>
+		          <field name="desc"/>
+	          </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+
+    <record model="ir.actions.act_window" id="action_divisi">
+      <field name="name">Divisi</field>
+      <field name="res_model">hr.divisi</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+   
+        <menuitem
+            id="menu_divisi"
+            action="action_divisi"
+            parent="hr.menu_human_resources_configuration"
+            sequence="10"/>
+  
+
+
+  </data>
+</odoo>
