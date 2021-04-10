@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hr_divisi,acces_hr_divisi,model_hr_divisi,,1,1,1,1
+access_riwayat_pekerjaan,acces_riwayat_pekerjaan,model_riwayat_pekerjaan,,1,1,1,1
