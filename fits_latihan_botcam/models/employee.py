@@ -9,4 +9,9 @@ class HrDivisi(models.Model):
 
 	name = fields.Char(string="Nama Divisi")
 	desc = fields.Char(string="Keterangan")
+
+class HrEmployee(models.Model):
+	_inherit = 'hr.employee'
+	
+	devisi_id = fields.Many2one('hr.divisi', string="Divisi")
 	

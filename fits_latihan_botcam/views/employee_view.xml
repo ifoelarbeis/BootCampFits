@@ -43,6 +43,17 @@
             action="action_divisi"
             parent="hr.menu_human_resources_configuration"
             sequence="10"/>
+
+     <record model="ir.ui.view" id="inherit_employee_divisi_form">
+      <field name="name">Employee Inherite</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_form"/>
+      <field name="arch" type="xml">
+        <field name="department_id" position="after">
+          <field name="devisi_id"/>
+        </field>
+      </field>
+    </record>  
   
 
 
