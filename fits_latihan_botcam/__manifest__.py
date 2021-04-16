@@ -24,6 +24,7 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'data/sequence.xml',
         'views/employee_view.xml',
         'views/pengajuan_sppd.xml',
     ],

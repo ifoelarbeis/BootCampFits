@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sequences for SPPD -->
+        <record id="seq_sppd" model="ir.sequence">
+            <field name="name">Pengajuan SPPD</field>
+            <field name="code">sppd</field>
+            <field name="prefix">PD</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

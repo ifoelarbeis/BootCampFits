@@ -1,30 +1,85 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError, Warning
+
 
 class PengajuanSppd(models.Model):
 	_name = 'report.pengajuan.sppd'
 	_description = 'Pengajuan SPPD'
 	
-	name 			= fields.Char(string="No SPPD")
+	@api.model
+	def _employee_get(self):
+		emp = self.env['hr.employee'].search([('user_id', '=', self._uid)], limit=1)
+		if emp:
+			return emp
+	
+	name 			= fields.Char(string="No SPPD", default="New")
 	wilayah 		= fields.Char(string="Wilayah")
 	note			= fields.Text("Maksud Utama")
-	user_id 		= fields.Many2one("res.users", string="User")
-	date			= fields.Date(string="Tanggal Pengajuan")
+	user_id 		= fields.Many2one("res.users", string="User", default=lambda self: self.env.user.id, readonly=True)
+	date			= fields.Date(string="Tanggal Pengajuan", default=fields.Date.context_today)
 	date_from		= fields.Date(string="Date From")
 	date_to			= fields.Date(string="Date To")
-	employee_id		= fields.Many2one("hr.employee", string="Employee")
+	employee_id		= fields.Many2one("hr.employee", string="Employee", default=_employee_get)
 	manager_id		= fields.Many2one(string="Manager", related="employee_id.parent_id", store=True)
 	sppd_line_ids	= fields.One2many("pengajuan.sppd.line","sppd_id", string="Line Sppd")
+	state			= fields.Selection([('draft', 'Draft'),
+										('submit', 'Submitted'),
+										('approve', 'Approve'),
+										('convert', 'Convert Expenses'),
+										('refuse', 'Refused')
+							  			], string='Status', index=True, readonly=True, copy=False, default='draft')
+	total 			= fields.Float(string="Total", compute='get_total')
+	
+	
+	@api.depends('sppd_line_ids.sub_total')
+	def get_total(self):
+		for line in self.sppd_line_ids :
+			self.total += line.sub_total
+			
+	@api.multi
+	def unlink(self):
+		for x in self:
+			if x.state != 'draft':
+				raise UserError(_('You cannot delete a SPPD another state draft.'))
+		super(PengajuanSppd, self).unlink()
+	
+
+	def action_submit(self):
+		if self.name == 'New':
+			self.name = self.env['ir.sequence'].next_by_code('sppd')
+		self.state= 'submit'
+		
+	def action_approve(self):
+		self.state = 'approve'
+		
+	def action_convert(self):
+		self.state = 'convert'
+		
+	def action_refuse(self):
+		self.state = 'refuse'
+		
+	def action_set_draft(self):
+		self.state = 'draft'
+	
+	
+	
 	
 	
 class SppdLine(models.Model):
 	_name = 'pengajuan.sppd.line'
 	_description = 'Pengajuan SPPD Line'
 	
-	product_id	= fields.Many2one("product.product", string="Product")
+	product_id	= fields.Many2one("product.product", string="Product", domain=[('can_be_expensed', '=', True)])
 	qty			= fields.Float(string="Quantity")
 	amount		= fields.Float(string="Amount")
-	sub_total	= fields.Float(string="Subtotal")
+	sub_total	= fields.Float(string="Subtotal", compute='_get_subtotal')
 	note		= fields.Char(string="Keterangan")
 	sppd_id		= fields.Many2one("report.pengajuan.sppd", string="SPPD")
+	
+	
+	@api.depends('qty','amount')
+	def _get_subtotal(self):
+		for line in self :
+			line.sub_total = line.qty * line.amount
 	
 	
