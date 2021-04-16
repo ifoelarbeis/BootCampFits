@@ -1,0 +1,66 @@
+<odoo>
+    <data>
+
+    	    <record model="ir.ui.view" id="pengajuan_sppd_form">
+		      <field name="name">Pengajuan SPPD</field>
+		      <field name="model">report.pengajuan.sppd</field>
+		      <field name="arch" type="xml">
+		        <form>
+		          <sheet>
+		            <group>
+		              <field name="name"/>
+		              <field name="date"/>
+		              <field name="wilayah"/>
+		              <field name="note"/>
+		              <field name="user_id"/>
+		              <field name="date_from"/>
+		              <field name="date_to"/>
+		              <field name="employee_id"/>
+		              <field name="manager_id"/>
+		            </group>
+		            <notebook>
+                        <page string="Estimasi Biaya">
+                        	<field name="sppd_line_ids">
+								<tree>
+									<field name="product_id"/>
+					              	<field name="qty"/>
+					              	<field name="amount"/>
+					              	<field name="note"/>
+					              	<field name="sub_total"/>
+								</tree>
+                        	</field>
+                        </page>
+                    </notebook>
+		          </sheet>
+		        </form>
+		      </field>
+		    </record>
+		    
+		  <record model="ir.ui.view" id="pengajuan_sppd_tree">
+		      <field name="name">Pengajuan SPPD</field>
+		      <field name="model">report.pengajuan.sppd</field>
+		      <field name="arch" type="xml">
+		        <tree>
+		          <field name="name"/>
+		          <field name="date"/>
+		          <field name="employee_id"/>
+		          <field name="wilayah"/>
+		        </tree>
+		      </field>
+		  </record>  
+		  
+		  
+		  <record model="ir.actions.act_window" id="action_sppd">
+		      <field name="name">Pengajuan SPPd</field>
+		      <field name="res_model">report.pengajuan.sppd</field>
+		      <field name="view_mode">tree,form</field>
+		  </record>   
+		  
+		   <menuitem
+            id="menu_sppd"
+		   	name ="Pengajuan SPPD" 
+            action="action_sppd"
+            parent="hr_expense.menu_hr_expense_root" 
+            sequence="5"/>
+    </data>
+</odoo>

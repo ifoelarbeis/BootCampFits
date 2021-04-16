@@ -19,12 +19,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr'],
+    'depends': ['base','hr','hr_expense'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'views/employee_view.xml',
+        'views/pengajuan_sppd.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
