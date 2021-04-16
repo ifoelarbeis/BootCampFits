@@ -12,7 +12,7 @@ class PengajuanSppd(models.Model):
 		if emp:
 			return emp
 	
-	name 			= fields.Char(string="No SPPD", default="New")
+	name 			= fields.Char(string="No SPPD", default="New", copy=False)
 	wilayah 		= fields.Char(string="Wilayah")
 	note			= fields.Text("Maksud Utama")
 	user_id 		= fields.Many2one("res.users", string="User", default=lambda self: self.env.user.id, readonly=True)
@@ -29,6 +29,7 @@ class PengajuanSppd(models.Model):
 										('refuse', 'Refused')
 							  			], string='Status', index=True, readonly=True, copy=False, default='draft')
 	total 			= fields.Float(string="Total", compute='get_total')
+	expenses_id		= fields.Many2one('hr.expense.sheet', string='Expenses Report')
 	
 	
 	@api.depends('sppd_line_ids.sub_total')
@@ -42,6 +43,32 @@ class PengajuanSppd(models.Model):
 			if x.state != 'draft':
 				raise UserError(_('You cannot delete a SPPD another state draft.'))
 		super(PengajuanSppd, self).unlink()
+		
+		
+	def create_expense(self):
+		expense_sheet = self.env['hr.expense.sheet']
+		expense = self.env['hr.expense']
+		for sppd in self :
+			exp = expense_sheet.create({
+									'name'			   	: sppd.name + sppd.wilayah,
+									'employee_id'		: sppd.employee_id.id
+								
+							     })
+			
+			for line in sppd.sppd_line_ids :
+				expense.create({
+									'product_id'		: line.product_id.id,
+									'name'				: line.product_id.name,
+									'unit_amount'		: line.amount,
+									'quantity'			: line.qty,
+									'date'				: sppd.date,
+									'sheet_id'			: exp.id,
+							     })
+			
+			sppd.expenses_id = exp.id
+				
+
+			
 	
 
 	def action_submit(self):
@@ -53,6 +80,7 @@ class PengajuanSppd(models.Model):
 		self.state = 'approve'
 		
 	def action_convert(self):
+		self.create_expense()
 		self.state = 'convert'
 		
 	def action_refuse(self):

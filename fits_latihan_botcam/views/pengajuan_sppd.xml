@@ -11,7 +11,7 @@
                               type="object" class="oe_highlight"/>  
                      <button name="action_approve" states='submit' string="Approve"
                               type="object" class="oe_highlight"/> 
-                     <button name="action_convert" states='approve' string="Convert"
+                     <button name="action_convert" states='approve' string="Create Expense"
                               type="object" class="oe_highlight"/> 
                      <button name="action_refuse" states='submit' string="Refuse"
                               type="object" class="oe_highlight"/>  
@@ -50,6 +50,11 @@
 	                                <field name="total"/>
                             </group>
                         </page>
+                        <page string="Other Information">
+                        	<group>
+                        		<field name="expenses_id"/>
+                        	</group>
+                        </page>
                     </notebook>
 		          </sheet>
 		        </form>
@@ -65,13 +70,14 @@
 		          <field name="date"/>
 		          <field name="employee_id"/>
 		          <field name="wilayah"/>
+		          <field name="state"/>
 		        </tree>
 		      </field>
 		  </record>  
 		  
 		  
 		  <record model="ir.actions.act_window" id="action_sppd">
-		      <field name="name">Pengajuan SPPd</field>
+		      <field name="name">Pengajuan SPPD</field>
 		      <field name="res_model">report.pengajuan.sppd</field>
 		      <field name="view_mode">tree,form</field>
 		  </record>   
