@@ -10,11 +10,11 @@
                      <button name="action_submit" states='draft' string="Submit"
                               type="object" class="oe_highlight"/>  
                      <button name="action_approve" states='submit' string="Approve"
-                              type="object" class="oe_highlight"/> 
+                              type="object" class="oe_highlight" groups='hr_expense.group_hr_expense_manager'/>  
                      <button name="action_convert" states='approve' string="Create Expense"
-                              type="object" class="oe_highlight"/> 
+                              type="object" class="oe_highlight" groups='hr_expense.group_hr_expense_manager'/> 
                      <button name="action_refuse" states='submit' string="Refuse"
-                              type="object" class="oe_highlight"/>  
+                              type="object" class="oe_highlight" groups='hr_expense.group_hr_expense_manager'/>   
                      <button name="action_set_draft" states='refuse' string="Set to Draft"
                               type="object" class="oe_highlight"/> 
                      <field name="state" widget="statusbar" statusbar_visible="draft,submit,approve,convert"/>

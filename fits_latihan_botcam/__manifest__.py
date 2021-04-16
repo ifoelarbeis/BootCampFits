@@ -27,6 +27,7 @@
         'data/sequence.xml',
         'views/employee_view.xml',
         'views/pengajuan_sppd.xml',
+        'report/report_sppd.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
